@@ -1,44 +1,28 @@
 {% load static %}
 
-<style>
-    .form-block {
-        margin-left: 170px;
-    }
-
-    .jsonwidgetbutton {
-        padding: 10px 15px;
-    }
-
-    .cursor {
-        cursor: pointer;
-    }
-</style>
+<link rel="stylesheet" type="text/css" href="{% static 'json_model_widget/css/styles.css' %}">
 
 <div class="form-block">
-
     <div id="fieldjson">
         {% for k,v in json.items %}
-        <p id="jsonrow{{ name }}{{ forloop.counter }}">
-            <select name="jsonkey{{ name }}">
-                {% for pair in col1 %}
-                <option value="{{ pair.id }}"
-                        {% if pair.id== k|add:
-                "0" %}selected{% endif %}>{{ pair }}</option>
-                {% endfor %}
-            </select>
-            <select name="jsonvalue{{ name }}">
-                {% for pair in col2 %}
-                <option value="{{ pair.id }}" {% if pair.id== v %}selected{% endif %}>{{ pair }}</option>
-                {% endfor %}
-            </select>
-            <img class="delete-row-button cursor" src="{% static 'json_model_widget/images/icon-deletepair.svg' %}"
-                 alt="False">
-        </p>
-
+            <p id="jsonrow{{ name }}{{ forloop.counter }}">
+                <select name="jsonkey{{ name }}">
+                    {% for pair in col1 %}
+                        <option value="{{ pair.id }}" {% if pair.id == k|add:0 %}selected{% endif %}>{{ pair }}</option>
+                    {% endfor %}
+                </select>
+                <select name="jsonvalue{{ name }}">
+                    {% for pair in col2 %}
+                        <option value="{{ pair.id }}" {% if pair.id == v|add:0 %}selected{% endif %}>{{ pair }}</option>
+                    {% endfor %}
+                </select>
+                <img class="delete-row-button cursor" src="{% static 'json_model_widget/images/icon-deletepair.svg' %}"
+                     alt="False">
+            </p>
         {% endfor %}
     </div>
 
-    <input class="jsonwidgetbutton" type="button" id="but" onclick="addrow()" value="Добавить пару"/>
+    <input class="jsonwidgetbutton" type="button" id="but" value="Добавить пару"/>
 
     <script type="text/javascript">
         if (!$) {
@@ -49,20 +33,35 @@
             $(this).parent('p').remove()
         })
 
+        $(".jsonwidgetbutton").on("click", addrow)
+
+        $(document).on('change click', '#fieldjson', function () {
+            console.log("kk")
+            if ($(this).children("p").length == 1) {
+                $(this).find('p:first > img').hide()
+            } else {
+                $(this).find('p:first > img').show()
+            }
+        })
+
+        $("#fieldjson").change()
+
         function addrow() {
-            console.log("ok");
-            $("#fieldjson").append(`<p><select name="jsonkey{{ name }}">
+            $("#fieldjson").append(`
+            <p><select name="jsonkey{{ name }}">
             {% for pair in col1 %}
                 <option value="{{ pair.id }}">{{ pair }}</option>
             {% endfor %}
-        </select>
-        <select name="jsonvalue{{ name }}">
-            {% for pair in col2 %}
-                <option value="{{ pair.id }}">{{ pair }}</option>
-            {% endfor %}
-        </select>
-        <img class="delete-row-button cursor" src="{% static 'json_model_widget/images/icon-deletepair.svg' %}" alt="False">
-        </p>`)
+            </select>
+            <select name="jsonvalue{{ name }}">
+                {% for pair in col2 %}
+                    <option value="{{ pair.id }}">{{ pair }}</option>
+                {% endfor %}
+            </select>
+            <img class="delete-row-button cursor" src="{% static 'json_model_widget/images/icon-deletepair.svg' %}" alt="False">
+            </p>`)
+
+            $("#fieldjson").change()
         };
     </script>
 
