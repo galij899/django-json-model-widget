@@ -17,7 +17,7 @@ class JsonPairInputs(Widget):
 
     """
 
-    def __init__(self, model1, model2, *args, **kwargs):
+    def __init__(self, model1, model2, sort_field_model1: str = None, sort_field_model2: str = None, *args, **kwargs):
         """
         A widget to display JsonField as a list of select field pairs that represent two models.
 
@@ -36,6 +36,11 @@ class JsonPairInputs(Widget):
 
         self.col1 = model1.objects.all()
         self.col2 = model2.objects.all()
+
+        if sort_field_model1 is not None:
+            self.col1 = model1.objects.order_by(sort_field_model1).all()
+        if sort_field_model2 is not None:
+            self.col2 = model2.objects.order_by(sort_field_model2).all()
 
     def render(self, name, value, attrs=None, renderer=None) -> str:
         """
