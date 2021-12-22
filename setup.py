@@ -8,7 +8,7 @@ with open('HISTORY.md') as history_file:
 
 setup_args = dict(
     name='django-json-model-widget',
-    version='0.0.6',
+    version='0.0.7',
     description='Custom flat json field widget for model pairs',
     long_description_content_type="text/markdown",
     long_description=README + '\n\n' + HISTORY,
