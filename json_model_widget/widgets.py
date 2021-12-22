@@ -38,9 +38,9 @@ class JsonPairInputs(Widget):
         self.col2 = model2.objects.all()
 
         if sort_field_model1 is not None:
-            self.col1 = model1.objects.order_by(sort_field_model1).all()
+            self.col1 = model1.objects.order_by(sort_field_model1)
         if sort_field_model2 is not None:
-            self.col2 = model2.objects.order_by(sort_field_model2).all()
+            self.col2 = model2.objects.order_by(sort_field_model2)
 
     def render(self, name, value, attrs=None, renderer=None) -> str:
         """
@@ -57,8 +57,8 @@ class JsonPairInputs(Widget):
             value = '{}'
 
         context = {
-            "col1": self.col1,
-            "col2": self.col2,
+            "col1": self.col1.all(),
+            "col2": self.col2.all(),
             "json": json.loads(value),
             "name": name
         }
